@@ -20,14 +20,29 @@ public class Cuenta {
     }
 
     public void depositar(double cantidad) {
-        saldo += cantidad;
+        if(cantidad >= 0.0) {
+        	saldo += cantidad;
+        }else {
+        	throw new IllegalArgumentException("La cantidad debe ser >= 0.0");
+        }
     }
 
     public void retirar(double cantidad) {
-        saldo -= cantidad;
+        if(saldo < cantidad) {
+        	throw new IllegalArgumentException("La cantidad excede el saldo de la cuenta para retirar");
+        }else {
+        	saldo -= cantidad;
+        }
+        
     }
 
     public boolean verificarNIP(String NIP) {
         return this.NIP.equals(NIP);
     }
+
+	@Override
+	public String toString() {
+		return "Cuenta [numeroCuenta=" + numeroCuenta + ", NIP=" + NIP + ", saldo=" + saldo + "]";
+	}
+    
 }

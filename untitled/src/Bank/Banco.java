@@ -6,8 +6,7 @@ import java.util.List;
 public class Banco {
     private static List<Cuenta> cuentas = new ArrayList<>();
 
-    private Banco() {
-    }
+    private Banco() {}
 
     // Buscar una cuenta
     public static Cuenta buscarCuenta(int numeroCuenta) {
@@ -21,4 +20,6 @@ public class Banco {
         cuentas.add(cuenta);
     }
 
+    
+    
 }

@@ -14,5 +14,8 @@ public class DepositStrategy implements TransactionStrategy {
     @Override
     public void execute() {
         // Lógica para realizar un depósito
+    	this.depositSlot.setAmountDepositedByClient(cantidad);
+    	double amountToDeposit = this.depositSlot.getAmountDepositedByClient();
+    	cuenta.depositar(amountToDeposit);
     }
 }
