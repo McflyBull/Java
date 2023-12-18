@@ -30,7 +30,7 @@ public class Atm {
         return instance;
     }
 
-    public void realizarTransaccion(TransactionStrategy strategy) {
+    public void executeTransaction(TransactionStrategy strategy) {
         strategy.execute();
     }
 

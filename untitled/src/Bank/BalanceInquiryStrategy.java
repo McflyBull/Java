@@ -1,10 +1,10 @@
 package Bank;
 
 public class BalanceInquiryStrategy implements TransactionStrategy {
-    private Cuenta cuenta;
+    private Account account;
 
-    public BalanceInquiryStrategy(Cuenta cuenta) {
-        this.cuenta = cuenta;
+    public BalanceInquiryStrategy(Account account) {
+        this.account = account;
     }
 
     @Override

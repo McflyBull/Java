@@ -1,21 +1,21 @@
 package Bank;
 
 public class DepositStrategy implements TransactionStrategy {
-    private Cuenta cuenta;
-    private double cantidad;
+    private Account account;
+    private double amount;
     private DepositSlot depositSlot;
 
-    public DepositStrategy(Cuenta cuenta, double cantidad, DepositSlot depositSlot) {
-        this.cuenta = cuenta;
-        this.cantidad = cantidad;
+    public DepositStrategy(Account account, double amount, DepositSlot depositSlot) {
+        this.account = account;
+        this.amount = amount;
         this.depositSlot = depositSlot;
     }
 
     @Override
     public void execute() {
         // Lógica para realizar un depósito
-    	this.depositSlot.setAmountDepositedByClient(cantidad);
+    	this.depositSlot.setAmountDepositedByClient(amount);
     	double amountToDeposit = this.depositSlot.getAmountDepositedByClient();
-    	cuenta.depositar(amountToDeposit);
+    	this.account.deposit(amountToDeposit);
     }
 }

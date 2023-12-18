@@ -1,19 +1,19 @@
 package Bank;
 
 public class WithdrawalStrategy implements TransactionStrategy {
-    private Cuenta cuenta;
-    private double cantidad;
+    private Account account;
+    private double amount;
     private CashDispenser cashDispenser;
 
-    public WithdrawalStrategy(Cuenta cuenta, double cantidad, CashDispenser cashDispenser) {
-        this.cuenta = cuenta;
-        this.cantidad = cantidad;
+    public WithdrawalStrategy(Account account, double amount, CashDispenser cashDispenser) {
+        this.account = account;
+        this.amount = amount;
         this.cashDispenser = cashDispenser;
     }
     
-    private boolean validacion(Cuenta cuenta, double cantidad) {
-		double saldo = this.cuenta.getSaldo();
-		if(cantidad > saldo) {
+    private boolean validation(Account account, double amount) {
+		double balance = this.account.getBalance();
+		if(amount > balance) {
 			return false;
 		}  	
     	return true;
@@ -23,12 +23,12 @@ public class WithdrawalStrategy implements TransactionStrategy {
     @Override
     public void execute() {
         // Lógica para realizar un retiro
-    	if(validacion(cuenta, cantidad)) {
-    		if(this.cashDispenser.isSufficientCashAvailable(cantidad)) {
+    	if(validation(account, amount)) {
+    		if(this.cashDispenser.isSufficientCashAvailable(amount)) {
     			System.out.println("-> Este cajero no cuenta con dinero suficiente");
     		}else {
-    			this.cashDispenser.dispenseCash(cantidad);
-    			cuenta.retirar(cantidad);
+    			this.cashDispenser.dispenseCash(amount);
+    			account.withdraw(amount);
     		}
     	}else {
     		System.out.println("-> La cuenta no tiene fondos suficientes para realizar el retiro");
