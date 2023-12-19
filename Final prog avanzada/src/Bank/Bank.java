@@ -1,5 +1,7 @@
 package Bank;
 
+import Bank.Account.Account;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,4 @@ public class Bank {
         accounts.add(account);
     }
 
-    
-    
 }

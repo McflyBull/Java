@@ -1,4 +1,4 @@
-package Bank;
+package Bank.Client;
 
 public class Client {
     private int numberAccount;

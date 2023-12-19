@@ -1,4 +1,6 @@
-package Bank;
+package Bank.Atm;
+
+import Bank.Interface.TransactionStrategy;
 
 public class Atm {
     private static Atm instance = new Atm();
@@ -33,6 +35,4 @@ public class Atm {
     public void executeTransaction(TransactionStrategy strategy) {
         strategy.execute();
     }
-
-    // Otros métodos y propiedades pueden ser agregados aquí según sea necesario
 }

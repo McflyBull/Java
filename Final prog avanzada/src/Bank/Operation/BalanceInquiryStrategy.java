@@ -1,4 +1,7 @@
-package Bank;
+package Bank.Operation;
+
+import Bank.Account.Account;
+import Bank.Interface.TransactionStrategy;
 
 public class BalanceInquiryStrategy implements TransactionStrategy {
     private Account account;
@@ -9,6 +12,7 @@ public class BalanceInquiryStrategy implements TransactionStrategy {
 
     @Override
     public void execute() {
-        // Lógica para la consulta de saldo
+        double balance = account.getBalance();
+        System.out.println("El saldo de su cuenta es: $" + balance);
     }
 }

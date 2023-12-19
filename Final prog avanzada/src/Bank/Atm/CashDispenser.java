@@ -1,4 +1,4 @@
-package Bank;
+package Bank.Atm;
 
 public class CashDispenser {
     private double cashAvailable;
@@ -8,15 +8,14 @@ public class CashDispenser {
     }
 
     public void dispenseCash(double amount) {
-        	cashAvailable -= amount;
+        cashAvailable -= amount;
     }
 
     public boolean isSufficientCashAvailable(double amount) {
         return amount > cashAvailable;
     }
 
-	public double getCashAvailable() {
-		return cashAvailable;
-	}
-    
+    public double getCashAvailable() {
+        return cashAvailable;
+    }
 }
