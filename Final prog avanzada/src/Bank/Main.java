@@ -52,16 +52,17 @@ public class Main {
         double amount3 = 50000.0; // Cantidad ingresada por el usuario
         // Pruebas
         Account account3 = Bank.findAccount(numberAccount3);
+        System.out.print("Antes del retiro. ");
         Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account3));
         double atmMoneyBeforeDeposit = Atm.getInstance().getDepositSlot().getAmountDepositedTotal();
-        Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account3));
         Atm.getInstance().executeTransaction(new DepositStrategy(account3, amount3, Atm.getInstance().getDepositSlot()));
+        System.out.print("Después del retiro. ");
         Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account3));
 
 
         //Test case 5//////////////////////
         System.out.println("Test Case 5: Total de dinero depositado en ATM");
-        System.out.println("Dinero ATM antes depósito: " + atmMoneyBeforeDeposit);
-        System.out.println("Dinero ATM después depósito: " + Atm.getInstance().getDepositSlot().getAmountDepositedTotal());
+        System.out.println("Total de dinero depositado antes de la operación: " + atmMoneyBeforeDeposit);
+        System.out.println("Total de dinero depositado después de la operación: " + Atm.getInstance().getDepositSlot().getAmountDepositedTotal());
     }
 }

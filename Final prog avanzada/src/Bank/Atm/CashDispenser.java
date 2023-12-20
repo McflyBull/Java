@@ -12,7 +12,7 @@ public class CashDispenser {
     }
 
     public boolean isSufficientCashAvailable(double amount) {
-        return amount > cashAvailable;
+        return amount <= cashAvailable;
     }
 
     public double getCashAvailable() {
