@@ -2,6 +2,7 @@ package Bank;
 
 import Bank.Account.Account;
 import Bank.Atm.Atm;
+import Bank.Client.Client;
 import Bank.Interface.TransactionStrategy;
 import Bank.Operation.BalanceInquiryStrategy;
 import Bank.Operation.DepositStrategy;
@@ -11,58 +12,70 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Configuración inicial, como agregar cuentas al banco
-        Bank.addAccount(new Account(12345, "1234", 1000.0));
-        // Interacción del usuario simulada
-        int accountNumber = 12345; // Número de cuenta obtenido de la interfaz de usuario
-        double amount = 200.0; // Cantidad ingresada por el usuario
+
+        Account account1 = new Account(12345, "1234", 1000.0);
+        Client client1 = new Client(12345, "1234", account1);
+        Bank.addAccount(account1);
+
+        Account account2 = new Account(10000, "1000", 2000.0);
+        Client client2 = new Client(10000, "1000", account2);
+        Bank.addAccount(account2);
 
 
-        //Test case 1//////////////////////
+
+        System.out.println("\n-------------------------------------------------");
+        // Test case 1: Cliente retira $200, con saldo de $1000
         System.out.println("Test Case 1: Cliente retira $200, con saldo de $1000");
-        // Buscar cuenta y realizar una extracción
-        double moneyAvailableAtmInit = Atm.getInstance().getCashDispenser().getCashAvailable();
-        Account account = Bank.findAccount(accountNumber);
-        Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account));
-        Atm.getInstance().executeTransaction(new WithdrawalStrategy(account, amount, Atm.getInstance().getCashDispenser()));
-        Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account));
+        double amountWanted = 200.0; // Cantidad solicitada por el usuario
+        if (client1.verifyNIP("1234")) {
+            Atm atm = Atm.getInstance();
+            TransactionStrategy balanceInquiry = new BalanceInquiryStrategy(account1);
+            TransactionStrategy withdrawal = new WithdrawalStrategy(account1, amountWanted, atm.getCashDispenser());
+
+            atm.executeTransaction(balanceInquiry);
+            atm.executeTransaction(withdrawal);
+            atm.executeTransaction(balanceInquiry);
+        } else {
+            System.out.println("Autenticación fallida para el cliente 1.");
+        }
 
 
-        //Test case 2//////////////////////
-        System.out.println("Test Case 2: Dinero disponible ATM");
-        System.out.println("Antes del retiro: " + moneyAvailableAtmInit);
-        System.out.println("Después del retiro: " + Atm.getInstance().getCashDispenser().getCashAvailable());
+
+        System.out.println("\n-------------------------------------------------");
+        // Test case 2: Dinero disponible ATM
+        System.out.println("Test Case 2: Dinero disponible ATM"); // Anteriormente retire 200 deberia dar 10k menos 200
+        System.out.println("Dinero: " + Atm.getInstance().getCashDispenser().getCashAvailable());
 
 
-        //Test case 3//////////////////////
-        System.out.println("Test Case 3: Cliente retira $20000, con saldo de $2000");
-        Bank.addAccount(new Account(10000, "1000", 2000.0));
-        // Interacción del usuario simulada
-        int numberAccount2 = 10000; // Número de cuenta obtenido de la interfaz de usuario
-        double amount2 = 20000.0; // Cantidad ingresada por el usuario
-        // Pruebas
-        Account account2 = Bank.findAccount(numberAccount2);
-        Atm.getInstance().executeTransaction(new WithdrawalStrategy(account2, amount2, Atm.getInstance().getCashDispenser()));
+
+        System.out.println("\n-------------------------------------------------");
+        // Test case 3: Cliente intenta retirar más de su saldo
+        System.out.println("Test Case 3: Cliente intenta retirar $20000(veinte mil), con saldo de $2000 (dos mil)");
+        double amount2 = 20000.0;
+        if (client2.verifyNIP("1000")) {
+            TransactionStrategy withdrawal2 = new WithdrawalStrategy(account2, amount2, Atm.getInstance().getCashDispenser());
+            Atm.getInstance().executeTransaction(withdrawal2);
+        } else {
+            System.out.println("Autenticación fallida para el cliente 2.");
+        }
 
 
-        //Test case 4//////////////////////
+        System.out.println("\n-------------------------------------------------");
+        // Test case 4: Cliente con cuenta 12345, deposita $50000
         System.out.println("Test Case 4: Cliente con cuenta 12345, deposita $50000");
-        // Interacción del usuario simulada
-        int numberAccount3 = 12345; // Número de cuenta obtenido de la interfaz de usuario
         double amount3 = 50000.0; // Cantidad ingresada por el usuario
-        // Pruebas
-        Account account3 = Bank.findAccount(numberAccount3);
-        System.out.print("Antes del retiro. ");
-        Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account3));
-        double atmMoneyBeforeDeposit = Atm.getInstance().getDepositSlot().getAmountDepositedTotal();
-        Atm.getInstance().executeTransaction(new DepositStrategy(account3, amount3, Atm.getInstance().getDepositSlot()));
-        System.out.print("Después del retiro. ");
-        Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account3));
-
-
-        //Test case 5//////////////////////
-        System.out.println("Test Case 5: Total de dinero depositado en ATM");
-        System.out.println("Total de dinero depositado antes de la operación: " + atmMoneyBeforeDeposit);
-        System.out.println("Total de dinero depositado después de la operación: " + Atm.getInstance().getDepositSlot().getAmountDepositedTotal());
+        if (client1.verifyNIP("1234")) {
+            System.out.print("Antes del depósito. ");
+            Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account1));
+            double atmMoneyBeforeDeposit = Atm.getInstance().getDepositSlot().getAmountDepositedTotal();
+            TransactionStrategy deposit = new DepositStrategy(account1, amount3, Atm.getInstance().getDepositSlot());
+            Atm.getInstance().executeTransaction(deposit);
+            System.out.print("Después del depósito. ");
+            Atm.getInstance().executeTransaction(new BalanceInquiryStrategy(account1));
+            System.out.println("Total de dinero depositado en ATM antes de la operación: " + atmMoneyBeforeDeposit);
+            System.out.println("Total de dinero depositado en ATM después de la operación: " + Atm.getInstance().getDepositSlot().getAmountDepositedTotal());
+        } else {
+            System.out.println("Autenticación fallida para el cliente 1.");
+        }
     }
 }
